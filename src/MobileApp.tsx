@@ -3,15 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import {
-  CheckCircle2,
-  ClipboardList,
-  PackageCheck,
-  PackagePlus,
-  Phone,
-  ShoppingBasket,
-  Truck,
-} from 'lucide-react';
+import { CircleCheck as CheckCircle2, ClipboardList, PackageCheck, PackagePlus, Phone, ShoppingBasket, Truck } from 'lucide-react';
 
 type Role = 'picker' | 'receiver' | 'stocktaker' | 'checker' | 'driver';
 
