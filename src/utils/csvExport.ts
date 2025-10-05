@@ -1,17 +1,30 @@
 import { type ProductImportRow, type NormalizedProduct, type NormalizedBarcode } from '@/types/product';
+import type { StockholdingConfig } from '@/lib/settingsService';
 
-export function normalizeProducts(rows: ProductImportRow[]): NormalizedProduct[] {
-  return rows.map((row) => ({
-    product_alias: row['Product Alias']?.toString().trim() || '',
-    principal_company: row['PrincipalCompany']?.toString().trim() || '',
-    product_name: row['Product Name']?.toString().trim() || '',
-    brand: row['Brand']?.toString().trim() || '',
-    case_size: row['Case Size']?.toString().trim() || '',
-    pack_size: row['Pack size']?.toString().trim() || '',
-    category: row['Category']?.toString().trim() || '',
-    pack_count: parseInt(row['Pack Count']?.toString().trim() || '0', 10),
-    container: row['Container']?.toString().trim() || '',
-  }));
+export function normalizeProducts(
+  rows: ProductImportRow[],
+  stockholdingConfig?: StockholdingConfig
+): NormalizedProduct[] {
+  const defaultWeeks = stockholdingConfig?.defaultWeeks ?? 8;
+
+  return rows.map((row) => {
+    const stockholdingWeeks = row['Stockholding Weeks']?.toString().trim();
+    const parsedWeeks = stockholdingWeeks ? parseFloat(stockholdingWeeks) : defaultWeeks;
+    const finalWeeks = isNaN(parsedWeeks) ? defaultWeeks : parsedWeeks;
+
+    return {
+      product_alias: row['Product Alias']?.toString().trim() || '',
+      principal_company: row['PrincipalCompany']?.toString().trim() || '',
+      product_name: row['Product Name']?.toString().trim() || '',
+      brand: row['Brand']?.toString().trim() || '',
+      case_size: row['Case Size']?.toString().trim() || '',
+      pack_size: row['Pack size']?.toString().trim() || '',
+      category: row['Category']?.toString().trim() || '',
+      pack_count: parseInt(row['Pack Count']?.toString().trim() || '0', 10),
+      container: row['Container']?.toString().trim() || '',
+      stockholding_weeks: finalWeeks,
+    };
+  });
 }
 
 export function normalizeBarcodes(rows: ProductImportRow[]): NormalizedBarcode[] {

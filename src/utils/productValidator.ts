@@ -1,9 +1,16 @@
 import { type ProductImportRow, type ValidationIssue, REQUIRED_COLUMNS } from '@/types/product';
+import type { StockholdingConfig } from '@/lib/settingsService';
 
-export function validateProductImport(rows: ProductImportRow[]): ValidationIssue[] {
+export function validateProductImport(
+  rows: ProductImportRow[],
+  stockholdingConfig?: StockholdingConfig
+): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   const seenCaseBarcodes = new Set<string>();
   const seenUnitBarcodes = new Set<string>();
+
+  const minWeeks = stockholdingConfig?.minWeeks ?? 1;
+  const maxWeeks = stockholdingConfig?.maxWeeks ?? 52;
 
   rows.forEach((row, index) => {
     const rowNum = index + 2;
@@ -86,6 +93,47 @@ export function validateProductImport(rows: ProductImportRow[]): ValidationIssue
         });
       }
       seenUnitBarcodes.add(unitBarcode);
+    }
+
+    const stockholdingWeeks = row['Stockholding Weeks']?.toString().trim();
+    if (stockholdingWeeks) {
+      const weeksNum = parseFloat(stockholdingWeeks);
+      if (isNaN(weeksNum)) {
+        issues.push({
+          row: rowNum,
+          field: 'Stockholding Weeks',
+          message: 'Must be a numeric value',
+          type: 'error',
+        });
+      } else if (weeksNum < minWeeks) {
+        issues.push({
+          row: rowNum,
+          field: 'Stockholding Weeks',
+          message: `Value is below minimum (${minWeeks} weeks)`,
+          type: 'error',
+        });
+      } else if (weeksNum > maxWeeks) {
+        issues.push({
+          row: rowNum,
+          field: 'Stockholding Weeks',
+          message: `Value exceeds maximum (${maxWeeks} weeks)`,
+          type: 'error',
+        });
+      } else if (weeksNum < minWeeks * 1.5) {
+        issues.push({
+          row: rowNum,
+          field: 'Stockholding Weeks',
+          message: 'Value is unusually low, may cause stockouts',
+          type: 'warning',
+        });
+      } else if (weeksNum > maxWeeks * 0.75) {
+        issues.push({
+          row: rowNum,
+          field: 'Stockholding Weeks',
+          message: 'Value is unusually high, may increase holding costs',
+          type: 'warning',
+        });
+      }
     }
   });
 

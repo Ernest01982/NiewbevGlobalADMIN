@@ -10,6 +10,7 @@ export interface ProductImportRow {
   'Container': string;
   'Case barcode': string;
   'Unit Barcode': string;
+  'Stockholding Weeks'?: string;
 }
 
 export interface ValidationIssue {
@@ -29,6 +30,29 @@ export interface NormalizedProduct {
   category: string;
   pack_count: number;
   container: string;
+  stockholding_weeks: number;
+}
+
+export interface Product extends NormalizedProduct {
+  id: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProductBarcode {
+  id: string;
+  product_id: string;
+  barcode: string;
+  kind: 'CASE' | 'UNIT';
+  created_at?: string;
+}
+
+export interface SystemSetting {
+  id: string;
+  setting_key: string;
+  setting_value: string;
+  description: string;
+  updated_at?: string;
 }
 
 export interface NormalizedBarcode {
