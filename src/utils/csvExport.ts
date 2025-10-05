@@ -19,12 +19,12 @@ export function normalizeBarcodes(rows: ProductImportRow[]): NormalizedBarcode[]
 
   rows.forEach((row) => {
     const productAlias = row['Product Alias']?.toString().trim() || '';
-    const caseBarcode = row['Case barcode']?.toString().trim();
-    const unitBarcode = row['Unit Barcode']?.toString().trim();
+    const caseBarcode = row['Case barcode']?.toString().trim().replace(/\s+/g, '');
+    const unitBarcode = row['Unit Barcode']?.toString().trim().replace(/\s+/g, '');
 
     if (caseBarcode) {
       barcodes.push({
-        product_alias: productAlias,
+        sku: productAlias,
         barcode: caseBarcode,
         kind: 'CASE',
       });
@@ -32,7 +32,7 @@ export function normalizeBarcodes(rows: ProductImportRow[]): NormalizedBarcode[]
 
     if (unitBarcode) {
       barcodes.push({
-        product_alias: productAlias,
+        sku: productAlias,
         barcode: unitBarcode,
         kind: 'UNIT',
       });

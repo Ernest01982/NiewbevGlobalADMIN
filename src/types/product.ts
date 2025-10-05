@@ -32,7 +32,7 @@ export interface NormalizedProduct {
 }
 
 export interface NormalizedBarcode {
-  product_alias: string;
+  sku: string;
   barcode: string;
   kind: 'CASE' | 'UNIT';
 }
