@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Upload, Download, AlertTriangle, AlertCircle } from 'lucide-react';
+import { Upload, Download, TriangleAlert as AlertTriangle, CircleAlert as AlertCircle } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { type ProductImportRow, type ValidationIssue, REQUIRED_COLUMNS } from '@/types/product';
 import { validateProductImport } from '@/utils/productValidator';
