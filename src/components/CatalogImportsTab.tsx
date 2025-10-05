@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
-import { Upload, Download, TriangleAlert as AlertTriangle, CircleAlert as AlertCircle, Edit, Search, RefreshCw } from 'lucide-react';
+import { Upload, Download, TriangleAlert as AlertTriangle, CircleAlert as AlertCircle, CreditCard as Edit, Search, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 import { type ProductImportRow, type ValidationIssue, type Product, REQUIRED_COLUMNS } from '@/types/product';
@@ -527,7 +527,7 @@ export function CatalogImportsTab() {
             }}>
               <strong>Note:</strong> This import mirrors the bulk-upload template used by backend ingest.
               Downloads generate normalized <code>products.csv</code> and <code>product_barcodes.csv</code> files
-              with CASE and UNIT barcode kinds. The optional "Stockholding Weeks" column defaults to {stockholdingConfig.defaultWeeks} weeks if not specified.
+              with CASE and UNIT barcode kinds. The optional "Stockholding Weeks\" column defaults to {stockholdingConfig.defaultWeeks} weeks if not specified.
             </p>
           </div>
         </CardContent>
